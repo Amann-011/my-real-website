@@ -75,7 +75,39 @@ function authenticate(req, res, next) {
     });
   }
 }
+function adminOnly(req, res, next) {
+  if (!process.env.ADMIN_EMAIL) {
+    return res.status(500).json({
+      message: "Admin email is not configured."
+    });
+  }
 
+  if (req.user.email !== process.env.ADMIN_EMAIL.trim().toLowerCase()) {
+    return res.status(403).json({
+      message: "Admin access denied."
+    });
+  }
+
+  next();
+}
+
+app.get("/api/admin/stats", authenticate, adminOnly, async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT COUNT(*)::int AS total_users FROM users"
+    );
+
+    res.json({
+      totalUsers: result.rows[0].total_users
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Could not load admin stats."
+    });
+  }
+});
 
 // REGISTER
 app.post("/api/register", async (req, res) => {
