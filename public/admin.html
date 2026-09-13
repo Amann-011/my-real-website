@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="logo">MyWebsite</div>
+
+    <button id="logoutBtn" class="btn">Logout</button>
+  </header>
+
+  <main class="dashboard-container">
+
+    <div class="dashboard-card">
+
+      <p class="badge">ADMIN PANEL</p>
+
+      <h1>Admin Dashboard 👋</h1>
+
+      <p class="subtitle">
+        Website statistics
+      </p>
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+
+          <h2 id="totalUsers">Loading...</h2>
+
+          <p>Registered Users</p>
+        </div>
+
+      </div>
+
+      <p id="message"></p>
+
+    </div>
+
+  </main>
+
+  <script>
+    async function loadAdminStats() {
+      try {
+        const response = await fetch("/api/admin/stats", {
+          credentials: "include"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Access denied");
+        }
+
+        document.getElementById("totalUsers").textContent =
+          data.totalUsers;
+
+      } catch (error) {
+        document.getElementById("message").textContent =
+          error.message;
+
+        document.getElementById("totalUsers").textContent = "—";
+      }
+    }
+
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", async () => {
+
+        await fetch("/api/logout", {
+          method: "POST",
+          credentials: "include"
+        });
+
+        window.location.href = "/";
+      });
+
+    loadAdminStats();
+  </script>
+
+</body>
+</html>
