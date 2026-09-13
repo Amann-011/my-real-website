@@ -11,96 +11,153 @@
 
 <body>
 
-  <header class="navbar">
-    <div class="logo">MyWebsite</div>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+
+    <div class="logo">
+      MyWebsite
+    </div>
 
     <div class="nav-actions">
-      <button id="themeBtn" class="icon-btn">🌙</button>
-      <button id="logoutBtn" class="btn">Logout</button>
-    </div>
-  </header>
 
+      <button id="themeBtn" class="icon-btn" title="Change theme">
+        🌙
+      </button>
+
+      <button id="logoutBtn" class="btn">
+        Logout
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <!-- DASHBOARD -->
   <main class="dashboard">
 
     <section class="welcome-section">
-      <div>
-        <p class="badge">PERSONAL DASHBOARD</p>
 
-        <h1>
-          Welcome back, <span id="userName">User</span> 👋
-        </h1>
+      <span class="badge">
+        PERSONAL DASHBOARD
+      </span>
 
-        <p>
-          Manage your account and explore your dashboard.
-        </p>
-      </div>
+      <h1>
+        Welcome, <span id="userName">User</span> 👋
+      </h1>
+
+      <p>
+        Manage your account and explore your personal space.
+      </p>
+
     </section>
 
+
+    <!-- CARDS -->
     <section class="dashboard-grid">
 
+
+      <!-- PROFILE -->
       <div class="dashboard-card profile-card">
 
-        <div class="profile-avatar" id="avatar">
+        <div class="profile-avatar" id="profileAvatar">
           U
         </div>
 
-        <h2 id="profileName">Loading...</h2>
+        <h2 id="profileName">
+          User
+        </h2>
 
-        <p id="userEmail">Loading...</p>
+        <p id="userEmail">
+          Loading email...
+        </p>
 
         <div class="status">
           <span></span>
-          Active Account
+          Account Active
         </div>
 
       </div>
 
+
+      <!-- ACCOUNT -->
       <div class="dashboard-card">
 
-        <div class="card-icon">📅</div>
+        <div class="card-icon">
+          🔐
+        </div>
 
-        <h3>Account Created</h3>
+        <h3>
+          Account
+        </h3>
 
-        <p id="createdAt">Loading...</p>
+        <p>
+          Your account is securely connected to the website.
+        </p>
+
+        <button class="small-btn" onclick="showAccountInfo()">
+          View Details
+        </button>
 
       </div>
 
+
+      <!-- MEMBER -->
       <div class="dashboard-card">
 
-        <div class="card-icon">🔐</div>
+        <div class="card-icon">
+          ✨
+        </div>
 
-        <h3>Security</h3>
+        <h3>
+          Member
+        </h3>
 
-        <p>Your account is protected.</p>
+        <p>
+          You are a registered member of MyWebsite.
+        </p>
 
-        <button class="small-btn" id="settingsBtn">
-          Account Settings
+        <button class="small-btn" onclick="showWelcome()">
+          Explore
         </button>
 
       </div>
 
     </section>
 
+
+    <!-- ACCOUNT INFORMATION -->
     <section class="dashboard-card activity-card">
 
-      <h2>Quick Actions</h2>
+      <h2>
+        Account Information
+      </h2>
 
       <div class="quick-actions">
 
-        <button class="action-btn">
+        <div class="action-btn">
           👤
-          <span>My Profile</span>
-        </button>
+          <span>
+            <small>Name</small>
+            <strong id="infoName">Loading...</strong>
+          </span>
+        </div>
 
-        <button class="action-btn">
-          ⚙️
-          <span>Settings</span>
-        </button>
+        <div class="action-btn">
+          📧
+          <span>
+            <small>Email</small>
+            <strong id="infoEmail">Loading...</strong>
+          </span>
+        </div>
 
-        <button class="action-btn">
-          🎁
-          <span>My Gift</span>
-        </button>
+        <div class="action-btn">
+          📅
+          <span>
+            <small>Joined</small>
+            <strong id="createdAt">Loading...</strong>
+          </span>
+        </div>
 
       </div>
 
@@ -108,88 +165,18 @@
 
   </main>
 
+
+  <script src="script.js"></script>
+
+
   <script>
-    async function loadUser() {
-
-      try {
-
-        const response = await fetch("/api/me", {
-          credentials: "include"
-        });
-
-        if (!response.ok) {
-          window.location.href = "/login.html";
-          return;
-        }
-
-        const data = await response.json();
-        const user = data.user;
-
-        document.getElementById("userName").textContent =
-          user.name;
-
-        document.getElementById("profileName").textContent =
-          user.name;
-
-        document.getElementById("userEmail").textContent =
-          user.email;
-
-        document.getElementById("avatar").textContent =
-          user.name.charAt(0).toUpperCase();
-
-        const date = new Date(user.created_at);
-
-        document.getElementById("createdAt").textContent =
-          date.toLocaleDateString("en-IN", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-          });
-
-      } catch (error) {
-
-        window.location.href = "/login.html";
-
-      }
+    function showAccountInfo() {
+      alert("Your account is active and securely connected.");
     }
 
-    document
-      .getElementById("logoutBtn")
-      .addEventListener("click", async () => {
-
-        await fetch("/api/logout", {
-          method: "POST",
-          credentials: "include"
-        });
-
-        window.location.href = "/";
-      });
-
-
-    const themeBtn = document.getElementById("themeBtn");
-
-    themeBtn.addEventListener("click", () => {
-
-      document.body.classList.toggle("dark-mode");
-
-      if (document.body.classList.contains("dark-mode")) {
-        themeBtn.textContent = "☀️";
-        localStorage.setItem("theme", "dark");
-      } else {
-        themeBtn.textContent = "🌙";
-        localStorage.setItem("theme", "light");
-      }
-
-    });
-
-
-    if (localStorage.getItem("theme") === "dark") {
-      document.body.classList.add("dark-mode");
-      themeBtn.textContent = "☀️";
+    function showWelcome() {
+      alert("Welcome to your personal dashboard! 🎉");
     }
-
-
-    loadUser();
   </script>
 
 </body>
