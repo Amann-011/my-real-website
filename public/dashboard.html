@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="dashboard">
+
+    <nav class="dashboard-nav">
+
+      <div class="logo">
+        MyWebsite
+      </div>
+
+      <button id="logoutBtn" class="logout">
+        Logout
+      </button>
+
+    </nav>
+
+
+    <main class="dashboard-content">
+
+      <div class="welcome-card">
+
+        <h1>
+          Welcome, <span id="userName">User</span> 👋
+        </h1>
+
+        <p class="user-info">
+          You are successfully logged in.
+        </p>
+
+        <p class="user-info">
+          Email:
+          <strong id="userEmail">Loading...</strong>
+        </p>
+
+        <p class="user-info">
+          Account created:
+          <strong id="createdAt">Loading...</strong>
+        </p>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
